@@ -61,6 +61,7 @@ if PYTHON_VERSION == 2:
     from urllib import urlretrieve
 elif PYTHON_VERSION == 3:
     from urllib.request import urlretrieve
+    from six import u as unicode
 
 
 def _isArrayLike(obj):
@@ -110,6 +111,7 @@ class COCO:
                 catToImgs[ann['category_id']].append(ann['image_id'])
 
         print('index created!')
+        print("%d images mapped" % len(imgToAnns))
 
         # create class members
         self.anns = anns
