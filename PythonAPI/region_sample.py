@@ -4,7 +4,14 @@ from pycocotools._mask import _frString, decode
 
 #from pycocotools.mask import
 class RegionSample():
+    """a class for targeted sampling of regions from MS-COCO RLE files
+    """
     def __init__(self, enc, label=None):
+        """Inputs:
+        enc   -- list of RLE encoded input dictionaries, or a single encoding
+                 {'counts':..., 'size':[...]}
+        label -- index of the encoding to use for sampling
+        """
         if isinstance(enc, str):
             with open(enc, 'r') as fh:
                 enc = json.load(fh)
@@ -14,6 +21,7 @@ class RegionSample():
         assert isinstance(enc, dict)
         self.enc = enc
         cocomask = _frString([enc])
+        self.area = cocomask.area(0)
         maskarray = cocomask[0]#.copy()
         height = enc['size'][0]
         self.height = height

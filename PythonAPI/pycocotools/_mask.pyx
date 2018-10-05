@@ -72,6 +72,7 @@ cdef class RLEs:
             #    free(self._R[i].cnts)
             #free(self._R[0].cnts)
             free(self._R)
+
     def __getattr__(self, key):
         if key == 'n':
             return self._n
@@ -90,6 +91,14 @@ cdef class RLEs:
         # The _mask allocated by Masks is now handled by ndarray
         PyArray_ENABLEFLAGS(ndarray, np.NPY_OWNDATA)
         return ndarray
+
+    def area(self, siz item=0):
+        cdef siz _area = 0
+        if item >= self._n:
+            raise IndexError("index %d is out of range [0, %d)" % (item, self._n))
+        for ii in range(1, self._R[item].m, 2):
+            _area += self._R[item].cnts[ii]
+        return _area
 
 
 cdef int binarySearch(int arr[], int low, 
